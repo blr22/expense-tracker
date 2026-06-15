@@ -78,3 +78,20 @@ func TestUpdateAmount(t *testing.T) {
 		}
 	}
 }
+
+func TestDeleteExpense(t *testing.T) {
+	deletedIDs := map[int]bool{2: true, 1: true, 3: true}
+
+	el := newFilledExpenseList()
+	for id := range deletedIDs {
+		if err := el.DeleteExpense(id); err != nil {
+			t.Errorf("unexpected error for id %d", id)
+		}
+	}
+
+	for _, v := range el.items {
+		if deletedIDs[v.ID] {
+			t.Errorf("id %d should be deleted", v.ID)
+		}
+	}
+}
