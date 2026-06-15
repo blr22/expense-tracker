@@ -123,8 +123,9 @@ func TestSummary(t *testing.T) {
 
 func summaryByMonth(el *ExpenseList, month int) int {
 	var sum int
+	m := time.Month(month)
 	for _, v := range el.items {
-		if v.Date.Month() == time.Month(month) {
+		if v.Date.Month() == m {
 			sum += v.Amount
 		}
 	}
