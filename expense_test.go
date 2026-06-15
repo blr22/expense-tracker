@@ -47,7 +47,7 @@ func newFilledExpenseList() *ExpenseList {
 
 func TestUpdateDesc(t *testing.T) {
 	updates := map[int]string{1: "Chips", 2: "Cleaning", 3: "Rent", 4: "Travel"}
-	
+
 	el := newFilledExpenseList()
 	for id, desc := range updates {
 		if err := el.UpdateDesc(id, desc); err != nil {
@@ -58,6 +58,23 @@ func TestUpdateDesc(t *testing.T) {
 	for _, v := range el.items {
 		if v.Desc != updates[v.ID] {
 			t.Errorf("expected desc %q for id %d, got %q", updates[v.ID], v.ID, v.Desc)
+		}
+	}
+}
+
+func TestUpdateAmount(t *testing.T) {
+	updates := map[int]int{1: 25, 2: 30, 3: 40, 4: 790}
+
+	el := newFilledExpenseList()
+	for id, amount := range updates {
+		if err := el.UpdateAmount(id, amount); err != nil {
+			t.Errorf("unexpected error for id %d: %v", id, err)
+		}
+	}
+
+	for _, v := range el.items {
+		if v.Amount != updates[v.ID] {
+			t.Errorf("expected amount %d for id %d, got %d", updates[v.ID], v.ID, v.Amount)
 		}
 	}
 }
