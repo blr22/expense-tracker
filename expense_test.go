@@ -107,3 +107,15 @@ func TestListAll(t *testing.T) {
 		t.Error("ListAll returned the same underlying array, expected copy")
 	}
 }
+
+func TestSummary(t *testing.T) {
+	el := newFilledExpenseList()
+	var expSum int
+	for _, v := range el.items {
+		expSum += v.Amount
+	}
+
+	if sum := el.Summary(); expSum != sum {
+		t.Errorf("expected sum %d, got %d", expSum, sum)
+	}
+}
