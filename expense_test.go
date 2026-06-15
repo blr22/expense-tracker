@@ -95,3 +95,15 @@ func TestDeleteExpense(t *testing.T) {
 		}
 	}
 }
+
+func TestListAll(t *testing.T) {
+	el := newFilledExpenseList()
+	l := el.ListAll()
+	if len(el.items) != len(l) {
+		t.Errorf("expected %d items, got %d", len(el.items), len(l))
+	}
+	el.items[0] = Expense{}
+	if l[0].Desc == "" {
+		t.Error("ListAll returned the same underlying array, expected copy")
+	}
+}
