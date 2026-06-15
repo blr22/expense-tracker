@@ -2,6 +2,7 @@ package main
 
 import (
 	"testing"
+	"time"
 )
 
 func TestAddExpense(t *testing.T) {
@@ -117,5 +118,33 @@ func TestSummary(t *testing.T) {
 
 	if sum := el.Summary(); expSum != sum {
 		t.Errorf("expected sum %d, got %d", expSum, sum)
+	}
+}
+
+func summaryByMonth(el *ExpenseList, month int) int {
+	var sum int
+	for _, v := range el.items {
+		if v.Date.Month() == time.Month(month) {
+			sum += v.Amount
+		}
+	}
+	return sum
+}
+
+func TestSummaryByMonth(t *testing.T) {
+	invalidMonths := []int{-1, 22, 0, 13, 99}
+
+	el := newFilledExpenseList()
+	for _, month := range invalidMonths {
+		if _, err := el.SummaryByMonth(month); err == nil {
+			t.Errorf("month must be 1-12, not %d", month)
+		}
+	}
+
+	for month := 1; month <= 12; month++ {
+		expSum := summaryByMonth(el, month)
+		if sum, _ := el.SummaryByMonth(month); sum != expSum {
+			t.Errorf("expected summary by %s equal %d, got %d", time.Month(month), expSum, sum)
+		}
 	}
 }
