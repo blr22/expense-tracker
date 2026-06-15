@@ -36,15 +36,21 @@ func (el *ExpenseList) AddExpense(desc string, amount int) int {
 	return id
 }
 
-func (el *ExpenseList) UpdateExpense(id int, desc *string, amount *int) error {
+func (el *ExpenseList) UpdateDesc(id int, desc string) error {
 	for i, v := range el.items {
 		if v.ID == id {
-			if desc != nil {
-				el.items[i].Desc = *desc
-			}
-			if amount != nil {
-				el.items[i].Amount = *amount
-			}
+			el.items[i].Desc = desc
+			el.items[i].Date = time.Now()
+			return nil
+		}
+	}
+	return fmt.Errorf("incorrect ID: %d", id)
+}
+
+func (el *ExpenseList) UpdateAmount(id int, amount int) error {
+	for i, v := range el.items {
+		if v.ID == id {
+			el.items[i].Amount = amount
 			el.items[i].Date = time.Now()
 			return nil
 		}
