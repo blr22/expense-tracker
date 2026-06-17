@@ -65,3 +65,31 @@ func (s *Storage) ReadAll() ([]Expense, error) {
 	}
 	return res, nil
 }
+
+func (s *Storage) WriteAll(data []Expense) error {
+	records := make([][]string, 0, len(data))
+
+	for _, v := range data {
+		id := strconv.Itoa(v.ID)
+		desc := v.Desc
+		amount := strconv.Itoa(v.Amount)
+		date := v.Date.Format(time.RFC3339)
+		records = append(records, []string{id, desc, amount, date})
+	}
+
+	err := s.file.Truncate(0)
+	if err != nil {
+		return err
+	}
+	_, err = s.file.Seek(0, io.SeekStart)
+	if err != nil {
+		return err
+	}
+
+	w := csv.NewWriter(s.file)
+	err = w.WriteAll(records)
+	if err != nil {
+		return err
+	}
+	return nil
+}
