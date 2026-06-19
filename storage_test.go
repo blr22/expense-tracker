@@ -11,9 +11,12 @@ func TestNewStorage(t *testing.T) {
 	tmpDir := t.TempDir()
 	path := filepath.Join(tmpDir, "data")
 
-	_, err := NewStorage(path)
+	s, err := NewStorage(path)
 	if err != nil {
 		t.Fatalf("failed to create storage %q: %v", path, err)
+	}
+	if err = s.Close(); err != nil {
+		t.Fatalf("failed to close storage: %v", err)
 	}
 }
 
