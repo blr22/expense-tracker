@@ -99,7 +99,7 @@ func TestDeleteExpense(t *testing.T) {
 
 func TestListAll(t *testing.T) {
 	el := newFilledExpenseList()
-	l := el.ListAll()
+	l := el.All()
 	if len(el.items) != len(l) {
 		t.Errorf("expected %d items, got %d", len(el.items), len(l))
 	}
