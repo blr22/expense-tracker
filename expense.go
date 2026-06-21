@@ -68,8 +68,12 @@ func (el *ExpenseList) DeleteExpense(id int) error {
 	return fmt.Errorf("incorrect ID: %d", id)
 }
 
-func (el *ExpenseList) ListAll() []Expense {
+func (el *ExpenseList) All() []Expense {
 	return append([]Expense{}, el.items...)
+}
+
+func (el *ExpenseList) Load(e []Expense) {
+	el.items = append(el.items, e...)
 }
 
 func (el *ExpenseList) Summary() int {
